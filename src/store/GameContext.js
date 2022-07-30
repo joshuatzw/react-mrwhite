@@ -1,5 +1,4 @@
 import {createContext, useState} from 'react'
-import { addPlayer, getPlayerList } from '../services/firebase'
 
 
 export const GameContext = createContext({
@@ -18,6 +17,11 @@ export const GameContext = createContext({
   voteArray: [],
   playerObject: {},
   globalSpyCount: 0,
+  endGamePage: [],
+  endGameBoolean: false,
+  spyCountDoc: null,
+  globalWordNumber: 0,
+  playerCount: 0,
   setName: (()=>null),
   setRoom: (()=>null),
   setIntroOn: (()=>null),
@@ -33,6 +37,11 @@ export const GameContext = createContext({
   setVoteArray: (()=>null),
   setPlayerObject: (()=>null),
   setGlobalSpyCount: (()=>null),
+  setEndGamePage: (()=>null),
+  setEndGameBoolean: (()=>null),
+  setSpyCountDoc: (()=>null),
+  setGlobalWordNumber: (()=>null),
+  setPlayerCount: (()=>null),
 })
 
 export default function GameResources(props) {
@@ -52,6 +61,12 @@ export default function GameResources(props) {
   const [voteArray, setVoteArray] = useState([])
   const [playerObject, setPlayerObject] = useState({})
   const [globalSpyCount, setGlobalSpyCount] = useState(0)
+  const [spyCountDoc, setSpyCountDoc] = useState()
+  const [endGamePage, setEndGamePage] = useState([])
+  const [endGameBoolean, setEndGameBoolean] = useState(false)
+  const [globalWordNumber, setGlobalWordNumber] = useState(0)
+  const [playerCount, setPlayerCount] = useState(0)
+
   
 
   const context = {
@@ -70,6 +85,11 @@ export default function GameResources(props) {
     voteArray: voteArray,
     playerObject: playerObject,
     globalSpyCount: globalSpyCount,
+    endGamePage: endGamePage,
+    endGameBoolean: endGameBoolean,
+    spyCountDoc: spyCountDoc,
+    globalWordNumber: globalWordNumber,
+    playerCount: playerCount,
     setName: setName,
     setRoom: setRoom,
     setIntroOn: setIntroOn,
@@ -85,6 +105,11 @@ export default function GameResources(props) {
     setVoteArray: setVoteArray,
     setPlayerObject: setPlayerObject,
     setGlobalSpyCount: setGlobalSpyCount,
+    setEndGamePage: setEndGamePage,
+    setEndGameBoolean: setEndGameBoolean,
+    setSpyCountDoc: setSpyCountDoc,
+    setGlobalWordNumber: setGlobalWordNumber,
+    setPlayerCount: setPlayerCount,
   };
 
   

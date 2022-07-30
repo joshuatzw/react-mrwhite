@@ -32,7 +32,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
-async function createGame(name, room) {
+async function createGame(name, room, number) {
   // For host usage. When creating room, add themselves into a room.
   try {
     await addDoc(collection(db, "rooms", room, "players"), {
@@ -59,7 +59,43 @@ async function createGame(name, room) {
   } catch (error) {
     console.error(error)
   }
+
+   //Introduce a boolean for game to end.
+   try {
+    await addDoc(collection(db, "rooms", room, "end-game-status"), {
+      status: false
+    })
+  } catch (error) {
+    console.error(error)
+  }
+
+  try {
+    await addDoc(collection(db, "rooms", room, "word-index-number"), {
+      wordNumber: number
+    } )
+  } catch (error) {
+    console.error(error)
+  }
 }
+
+async function getWordNumber(room, callback) {
+  return onSnapshot(
+    query(
+      collection(db, "rooms", room, "word-index-number")
+    ), (data) => {
+
+      const status = data.docs.map((doc)=>({
+        ...doc.data(),
+        id: doc.id
+      }))
+      
+      if (callback) {
+        callback(status[0].wordNumber)
+      }
+    }
+  )
+}
+
 
 // Room Status --> When this turns true, everyone's screens will be redirected. 
 async function getRoomStatus(room, callbackStatusID, callbackstatus) {
@@ -72,9 +108,6 @@ async function getRoomStatus(room, callbackStatusID, callbackstatus) {
         ...doc.data(),
         id: doc.id
       }))
-
-      console.log(status[0].id)
-      console.log(status[0].status)
       
       if (callbackStatusID && callbackstatus) {
         callbackStatusID(status[0].id)
@@ -190,6 +223,55 @@ async function getIdentities(room, setPlayerObject, setPlayerList) {
   )
 }
 
+async function putNumberOfSpiesInDB(room, number) {
+  // push list of spies in db
+  try {
+      await addDoc(collection(db, "rooms", room, "spy-count"), {
+        spyCount: number
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+async function updateSpyCount(room, id, number, setGlobalSpyCount) {
+  console.log(id)
+  const location = doc(db, "rooms", room, "spy-count", id)
+  const newCount = {spyCount: number - 1}
+  setGlobalSpyCount(number - 1)
+  await updateDoc(location, newCount)
+}
+
+async function getSpyCountFromDB(room, setSpyCount, setSpyCountID) {
+  //instead of 2 separate arrays (as per game init), we should consider merging it into an object for clarity after the start up.
+  return onSnapshot(
+    query(
+      collection(db, "rooms", room, "spy-count")
+    ), (data) => {
+      const spyCount = data.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      let numberOfSpies = [];
+      let spyCountId = [];
+      spyCount.map((doc) => {
+        numberOfSpies.push(doc.spyCount)
+        spyCountId.push(doc.id)
+      })
+      
+      if (setSpyCount) {
+        setSpyCount(numberOfSpies[0])
+        setSpyCountID(spyCountId[0])
+        
+      } else {
+        console.log("no callback provided.")
+        return null
+      }
+    }
+  )
+}
+
+
 async function castVote(vote, room) {
   // For host usage. When creating room, add themselves into a room.
   try {
@@ -274,18 +356,45 @@ async function getResultStatus(room, callbackStatusID, callbackstatus) {
 }
 
 async function updateResultStatusToTrue(room, id) {
-  console.log(id)
   const location = doc(db, "rooms", room, "results-page-status", id)
   const newStatus = {status: true}
   await updateDoc(location, newStatus)
 }
 
 async function updateResultStatusToFalse(room, id) {
-  console.log(id)
   const location = doc(db, "rooms", room, "results-page-status", id)
   const newStatus = {status: false}
   await updateDoc(location, newStatus)
 }
+
+
+async function getEndGameStatus(room, callbackStatusID, callbackstatus) {
+  return onSnapshot(
+    query(
+      collection(db, "rooms", room, "end-game-status")
+    ), (data) => {
+
+      const resultsStatus = data.docs.map((doc)=>({
+        ...doc.data(),
+        id: doc.id
+      }))
+      
+      if (callbackStatusID && callbackstatus) {
+        callbackStatusID(resultsStatus[0].id)
+        callbackstatus(resultsStatus[0].status)
+      }
+
+    }
+  )
+}
+
+async function updateEndGameStatusToTrue(room, id) {
+  console.log(id)
+  const location = doc(db, "rooms", room, "end-game-status", id)
+  const newStatus = {status: true}
+  await updateDoc(location, newStatus)
+}
+
 
 
 export {addPlayer,
@@ -301,4 +410,10 @@ export {addPlayer,
         getResultStatus,
         updateResultStatusToTrue,
         updateResultStatusToFalse,
+        updateEndGameStatusToTrue,
+        getEndGameStatus,
+        putNumberOfSpiesInDB,
+        updateSpyCount,
+        getSpyCountFromDB,
+        getWordNumber,
       } 

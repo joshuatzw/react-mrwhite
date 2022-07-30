@@ -1,6 +1,6 @@
 import { useContext, useEffect, useLayoutEffect} from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { getPlayerList, putIdentities, getRoomStatus, updateRoomStatus } from '../services/firebase';
+import { getPlayerList, putIdentities, getRoomStatus, updateRoomStatus, putNumberOfSpiesInDB } from '../services/firebase';
 import { GameContext } from '../store/GameContext';
 import './Lobby.css'
 import { spyCount, spyCountMoreThan10 } from '../data/gamedata';
@@ -44,6 +44,7 @@ export default function Lobby() {
     }
     
     resources.setGlobalSpyCount(numberOfSpies)
+    putNumberOfSpiesInDB(resources.room, numberOfSpies)
     //Everyone is a good guy first, in a separate array.
     for (let i = playerlength; i > 0; i--) {
       identities.push("good")
@@ -63,7 +64,6 @@ export default function Lobby() {
     // Send word to players from data store
     updateRoomStatus(resources.room, resources.oompa, resources.setOompaboolean)
 
-  
     // 
   }
 

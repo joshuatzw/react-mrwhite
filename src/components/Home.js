@@ -22,6 +22,10 @@ function joinHandler(name, room) {
 }
 
 function createHandler(name) {
+
+  // Generate a random number for the word
+  let randomWordNumber = Math.floor(Math.random() * 37)
+
   // Generate Random Room UUID
   function randomString(length, chars) {
     var result = '';
@@ -32,7 +36,7 @@ function createHandler(name) {
   
   resources.setName(name)
   resources.setRoom(roomuuid)
-  createGame(name, roomuuid)
+  createGame(name, roomuuid, randomWordNumber)
   //grabs room status doc id (oompa) and status itself (oompaboolean) in firebase - for some reason the word 'status' breaks the code.
   getRoomStatus(roomuuid, resources.setOompa, resources.setOompaboolean)
   getPlayerList(roomuuid, resources.setPlayerList)

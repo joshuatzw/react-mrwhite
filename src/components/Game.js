@@ -1,7 +1,8 @@
 import {useContext, useEffect, useState} from 'react' 
 import { useNavigate } from 'react-router-dom';
 import { GameContext } from '../store/GameContext'
-import { getIdentities, castVote, getVotes, getResultStatus, updateResultStatusToFalse, updateResultStatusToTrue, kickPlayer } from '../services/firebase';
+import { getIdentities, castVote, getVotes, getResultStatus, updateResultStatusToFalse, updateResultStatusToTrue, kickPlayer, getSpyCountFromDB, updateSpyCount, getWordNumber } from '../services/firebase';
+import { listOfWords } from '../data/listOfWords';
 
 export default function Game () {
   const resources = useContext(GameContext)
@@ -12,7 +13,10 @@ export default function Game () {
 
   // Grabbing the resources from database, and trigger the getVote listener
   useEffect(()=>{
+    resources.setPlayerCount(resources.playerList.length)
     resources.setVoteArray([])
+    getWordNumber(resources.room, resources.setGlobalWordNumber)
+    getSpyCountFromDB(resources.room, resources.setGlobalSpyCount, resources.setSpyCountDoc)
     getIdentities(resources.room, resources.setPlayerObject, resources.setPlayerList)
     setThisPlayer(resources.playerList.indexOf(resources.name))
     getResultStatus(resources.room, resources.setResultPage, resources.setResultPageBoolean)
@@ -76,9 +80,14 @@ export default function Game () {
 
         //game logic checking for spies: 
         if (resources.playerObject[highestVotedPlayer] === "spy") {
-          resources.setGlobalSpyCount(resources.globalSpyCount - 1)
+          updateSpyCount(resources.room, resources.spyCountDoc, resources.globalSpyCount, resources.setGlobalSpyCount)
           console.log("spy count drop")
+        } else {
+          console.log("voted player was not a spy.")
+          console.log(resources.globalSpyCount)
         }
+
+        resources.setPlayerCount(resources.playerCount - 1)
 
         // need to call a fuinction here to boot this player out of db
         kickPlayer(highestVotedPlayer, resources.room)
@@ -110,7 +119,7 @@ export default function Game () {
       {revealIdentity ? 
       <div>
         <h2> Your identity is {resources.playerObject[resources.name]} </h2> 
-        <h2> { resources.playerObject[resources.name] === "spy" ? "Youre a Spy" : "Your Word Is: Tomato" }</h2>
+        <h2> { resources.playerObject[resources.name] === "spy" ? "Youre a Spy" : `Your Word Is: ${listOfWords[resources.globalWordNumber]}` }</h2>
       </div>
       : null}
       
