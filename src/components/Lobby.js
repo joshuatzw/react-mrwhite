@@ -43,6 +43,7 @@ export default function Lobby() {
       numberOfSpies = spyCount[playerlength]
     }
     
+    resources.setGlobalSpyCount(numberOfSpies)
     //Everyone is a good guy first, in a separate array.
     for (let i = playerlength; i > 0; i--) {
       identities.push("good")
@@ -62,29 +63,24 @@ export default function Lobby() {
     // Send word to players from data store
     updateRoomStatus(resources.room, resources.oompa, resources.setOompaboolean)
 
-    // navigate to Game Screen
+  
     // 
   }
 
-  // useEffect(()=>{
-  //   if (resources.oompaboolean == true) {
-  //     navigate(`/game/${resources.room}`)
-  //   }
-  // }, [resources.oompaboolean])
-
+  // NAVIGATE TO GAME SCREEN:
+  // This useEffect hook triggers the snapshot in firebase and atttaches a QuerySnapshot listener to the base.
   useEffect(() => {
-    const unsubscribe = getRoomStatus(resources.room, null)
-    console.log(unsubscribe)
+    getRoomStatus(resources.room, resources.setOompa, resources.setOompaboolean)
+  }, [])
 
-    if (unsubscribe === true) {
+  // This hook navigates e once the boolean changes. 
+  useEffect(() => {
+  
+    if (resources.oompaboolean === true) {
       navigate(`/game/${resources.room}`)
-    } else {
-      return undefined
     }
 
-    return unsubscribe
-
-  }, [getRoomStatus(resources.room, null)])
+  }, [resources.oompaboolean])
 
 
 

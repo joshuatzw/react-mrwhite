@@ -10,6 +10,14 @@ export const GameContext = createContext({
   identityList: [],
   oompa: [],
   oompaboolean: false,
+  resultPage: [],
+  resultPageBoolean: false,
+  playerToKick: '',
+  playerToKickIdentity: '',
+  beginCalculation: false,
+  voteArray: [],
+  playerObject: {},
+  globalSpyCount: 0,
   setName: (()=>null),
   setRoom: (()=>null),
   setIntroOn: (()=>null),
@@ -17,6 +25,14 @@ export const GameContext = createContext({
   setIdentityList: (()=>null),
   setOompa: (()=>null),
   setOompaboolean: (()=>null),
+  setResultPage: (()=>null),
+  setResultPageBoolean: (()=>null),
+  setPlayerToKick: (()=>null),
+  setPlayerToKickIdentity: (()=>null),
+  setBeginCalculation: (()=>null),
+  setVoteArray: (()=>null),
+  setPlayerObject: (()=>null),
+  setGlobalSpyCount: (()=>null),
 })
 
 export default function GameResources(props) {
@@ -28,6 +44,15 @@ export default function GameResources(props) {
   const [identityList, setIdentityList] = useState([])
   const [oompa, setOompa] = useState([])
   const [oompaboolean, setOompaboolean] = useState(false)
+  const [resultPage, setResultPage] = useState([])
+  const [resultPageBoolean, setResultPageBoolean] = useState(false)
+  const [playerToKick, setPlayerToKick] = useState('')
+  const [playerToKickIdentity, setPlayerToKickIdentity] = useState('')
+  const [beginCalculation, setBeginCalculation] = useState(false)
+  const [voteArray, setVoteArray] = useState([])
+  const [playerObject, setPlayerObject] = useState({})
+  const [globalSpyCount, setGlobalSpyCount] = useState(0)
+  
 
   const context = {
     name: name,
@@ -37,6 +62,14 @@ export default function GameResources(props) {
     identityList: identityList,
     oompa: oompa,
     oompaboolean: oompaboolean,
+    resultPage:resultPage,
+    resultPageBoolean:resultPageBoolean,
+    playerToKick: playerToKick,
+    playerToKickIdentity: playerToKickIdentity,
+    beginCalculation: beginCalculation,
+    voteArray: voteArray,
+    playerObject: playerObject,
+    globalSpyCount: globalSpyCount,
     setName: setName,
     setRoom: setRoom,
     setIntroOn: setIntroOn,
@@ -44,6 +77,14 @@ export default function GameResources(props) {
     setIdentityList: setIdentityList,
     setOompa: setOompa,
     setOompaboolean: setOompaboolean,
+    setResultPage: setResultPage,
+    setResultPageBoolean: setResultPageBoolean,
+    setPlayerToKick: setPlayerToKick,
+    setPlayerToKickIdentity: setPlayerToKickIdentity,
+    setBeginCalculation: setBeginCalculation,
+    setVoteArray: setVoteArray,
+    setPlayerObject: setPlayerObject,
+    setGlobalSpyCount: setGlobalSpyCount,
   };
 
   
