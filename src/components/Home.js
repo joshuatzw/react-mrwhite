@@ -14,8 +14,10 @@ const [room, setRoom] = useState('')
 const navigate = useNavigate();
 
 function joinHandler(name, room) {
+  let joinroomid = String(room);
+  joinroomid = joinroomid.toUpperCase();
   resources.setName(name)
-  resources.setRoom(room)
+  resources.setRoom(joinroomid)
   addPlayer(name, room)
   getPlayerList(room, resources.setPlayerList)
   navigate(`/room/${room}`)
@@ -33,6 +35,7 @@ function createHandler(name) {
     return result;
   }
   let roomuuid = randomString(5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+  roomuuid = roomuuid.toUpperCase();
   
   resources.setName(name)
   resources.setRoom(roomuuid)
