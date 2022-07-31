@@ -24,7 +24,7 @@ function joinHandler(name, room) {
 function createHandler(name) {
 
   // Generate a random number for the word
-  let randomWordNumber = Math.floor(Math.random() * 37)
+  let randomWordNumber = Math.floor(Math.random() * 63)
 
   // Generate Random Room UUID
   function randomString(length, chars) {
