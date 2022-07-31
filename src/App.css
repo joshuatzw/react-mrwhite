@@ -39,6 +39,8 @@
   .homepage-button {
     margin-top: 20px;
     height: 40px;
+    font-size: 20px;
+    text-align: center;
   }
 
   .player-list-item {
@@ -52,14 +54,16 @@
     font-size: 30px;
     color: white;
     box-shadow: inset;
+    text-align: center;
   }
 
 
-  
+
   .result-button {
     margin-top: 10px;
     height: 30px;
     margin-bottom: 10px;
+    text-align: center;
   }
 
 
