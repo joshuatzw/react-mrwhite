@@ -96,7 +96,7 @@ export default function Lobby() {
         })}
       </ul>
 
-      <button onClick={startGame}> Start Game</button>
+      <button className='homepage-button' onClick={startGame}> Start Game</button>
     </div>
 
         

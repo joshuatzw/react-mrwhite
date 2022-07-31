@@ -53,7 +53,7 @@ return (
     <br />
 
     <button className='homepage-button' onClick={()=>{joinHandler(name, room)}}> Join </button>
-
+    <br />
     <button className='homepage-button' onClick={()=>{createHandler(name)}}> Create Room </button>
 
         
