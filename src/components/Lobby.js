@@ -91,7 +91,7 @@ export default function Lobby() {
       <ul>
         {resources.playerList.map((player)=>{
           return(
-            <li key={player}> {player} </li>
+            <li className='player-list-item' key={player}> {player} </li>
           )
         })}
       </ul>

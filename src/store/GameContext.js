@@ -22,6 +22,8 @@ export const GameContext = createContext({
   spyCountDoc: null,
   globalWordNumber: 0,
   playerCount: 0,
+  wordGuessed: false,
+  wordGuessedDoc: [],
   setName: (()=>null),
   setRoom: (()=>null),
   setIntroOn: (()=>null),
@@ -42,6 +44,8 @@ export const GameContext = createContext({
   setSpyCountDoc: (()=>null),
   setGlobalWordNumber: (()=>null),
   setPlayerCount: (()=>null),
+  setWordGuessed: (()=>null),
+  setWordGuessedDoc: (()=>null),
 })
 
 export default function GameResources(props) {
@@ -66,6 +70,8 @@ export default function GameResources(props) {
   const [endGameBoolean, setEndGameBoolean] = useState(false)
   const [globalWordNumber, setGlobalWordNumber] = useState(0)
   const [playerCount, setPlayerCount] = useState(0)
+  const [wordGuessed, setWordGuessed] = useState(false)
+  const [wordGuessedDoc, setWordGuessedDoc] = useState([])
 
   
 
@@ -90,6 +96,8 @@ export default function GameResources(props) {
     spyCountDoc: spyCountDoc,
     globalWordNumber: globalWordNumber,
     playerCount: playerCount,
+    wordGuessed: wordGuessed,
+    wordGuessedDoc: wordGuessedDoc,
     setName: setName,
     setRoom: setRoom,
     setIntroOn: setIntroOn,
@@ -110,6 +118,8 @@ export default function GameResources(props) {
     setSpyCountDoc: setSpyCountDoc,
     setGlobalWordNumber: setGlobalWordNumber,
     setPlayerCount: setPlayerCount,
+    setWordGuessed: setWordGuessed,
+    setWordGuessedDoc: setWordGuessedDoc,
   };
 
   

@@ -1,7 +1,66 @@
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  color: white;
   /* font-family: 'Ubuntu', sans-serif; */
+
 }
 .App {
   text-align: center;
+}
+
+@media (max-width: 1000px) {
+  h1 {
+    font-size: 300%;
+  }
+  
+  body {
+    background-color: rgb(157, 157, 232);
+  }
+
+  button{
+    border-radius: 5px;
+    background-color: #fff;
+    color: grey;
+    width: 200px;
+    
+
+  }
+
+  .homepage-input {
+    height: 45px;
+    margin-bottom: 10px;
+    color: black;
+  }
+
+  .homepage-input:focus, .homepage-input:focus {
+    color: rgb(80, 80, 80);
+}
+
+  .homepage-button {
+    margin-top: 20px;
+    height: 40px;
+  }
+
+  .player-list-item {
+    color: white;
+  }
+
+  .vote-button{
+    background-color: rgb(113, 113, 113);
+    margin: 3px;
+    width: 100px;
+    font-size: 30px;
+    color: white;
+    box-shadow: inset;
+  }
+
+
+  
+  .result-button {
+    margin-top: 10px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+
+
 }

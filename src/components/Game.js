@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from 'react' 
 import { useNavigate } from 'react-router-dom';
 import { GameContext } from '../store/GameContext'
-import { getIdentities, castVote, getVotes, getResultStatus, updateResultStatusToFalse, updateResultStatusToTrue, kickPlayer, getSpyCountFromDB, updateSpyCount, getWordNumber } from '../services/firebase';
+import { getIdentities, castVote, getVotes, getResultStatus, updateResultStatusToFalse, updateResultStatusToTrue, kickPlayer, getSpyCountFromDB, updateSpyCount, getWordNumber, getWordGuessedStatus, updateWordGuessedStatus } from '../services/firebase';
 import { listOfWords } from '../data/listOfWords';
 
 export default function Game () {
@@ -9,12 +9,14 @@ export default function Game () {
   const [thisPlayer, setThisPlayer] = useState(0)
   const [revealIdentity, setRevealIdentity] = useState(false)
   const navigate = useNavigate();
+  const [guess, setGuess] = useState('')
  
 
   // Grabbing the resources from database, and trigger the getVote listener
   useEffect(()=>{
     resources.setPlayerCount(resources.playerList.length)
     resources.setVoteArray([])
+    // getWordGuessedStatus(resources.room, resources.wordGuessedDoc, resources.wordGuessed)
     getWordNumber(resources.room, resources.setGlobalWordNumber)
     getSpyCountFromDB(resources.room, resources.setGlobalSpyCount, resources.setSpyCountDoc)
     getIdentities(resources.room, resources.setPlayerObject, resources.setPlayerList)
@@ -109,6 +111,12 @@ export default function Game () {
     castVote(vote, resources.room)
   }
 
+  // function guessHandler() {
+  //   if (guess.toLowerCase() === listOfWords[resources.globalWordNumber].toLowerCase) {
+  //     updateWordGuessedStatus(resources.room, resources.wordGuessedDoc)
+  //   }
+  // }
+
   return(
     <div>
       
@@ -119,17 +127,33 @@ export default function Game () {
       {revealIdentity ? 
       <div>
         <h2> Your identity is {resources.playerObject[resources.name]} </h2> 
-        <h2> { resources.playerObject[resources.name] === "spy" ? "Youre a Spy" : `Your Word Is: ${listOfWords[resources.globalWordNumber]}` }</h2>
+        <h2> { resources.playerObject[resources.name] === "spy" ? 
+        
+        // Spy
+        "Youre a Spy" : 
+        
+        
+        `Your Word Is: ${listOfWords[resources.globalWordNumber]}` }</h2>
       </div>
       : null}
       
       <br />
+{/* 
+      {resources.playerObject[resources.name] === "spy" ?
+      <div>
+        <input placeholder='Make a Guess!' value={guess} onChange={((e)=>{setGuess(e.target.value)})}/>
+        <button onClick={guessHandler}></button>
+      </div>
+      : null} */}
 
-      <h2> Please Vote For 1 Individual You Think Is The Spy </h2>
+      <h2> Please vote for 1 player to kick: </h2>
 
         {resources.playerList.map((player)=>{
           return(
-          <button className='btn' key={player} onClick={voteHandler} value={player}> {player} </button>
+          <>
+            <button className='vote-button' key={player} onClick={voteHandler} value={player}> {player} </button>
+            <br/>
+          </>
           )
         })}
  

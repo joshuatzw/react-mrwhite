@@ -76,6 +76,14 @@ async function createGame(name, room, number) {
   } catch (error) {
     console.error(error)
   }
+
+  try {
+    await addDoc(collection(db, "rooms", room, "word-guessed-status"), {
+      status: null
+    } )
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 async function getWordNumber(room, callback) {
@@ -95,7 +103,6 @@ async function getWordNumber(room, callback) {
     }
   )
 }
-
 
 // Room Status --> When this turns true, everyone's screens will be redirected. 
 async function getRoomStatus(room, callbackStatusID, callbackstatus) {
@@ -124,6 +131,43 @@ async function updateRoomStatus(room, id) {
   const newStatus = {status: true}
   await updateDoc(location, newStatus)
 }
+
+
+async function getWordGuessedStatus(room, callbackStatusID, callbackstatus) {
+  return onSnapshot(
+    query(
+      collection(db, "rooms", room, "word-guessed-status")
+    ), (data) => {
+
+      const status = data.docs.map((doc)=>({
+        ...doc.data(),
+        id: doc.id
+      }))
+      
+      if (callbackStatusID && callbackstatus) {
+        callbackStatusID(status[0].id)
+        callbackstatus(status[0].status)
+      }
+
+    }
+  )
+}
+
+async function updateWordGuessedStatusToTrue(room, id) {
+  console.log(id)
+  const location = doc(db, "rooms", room, "word-guessed-status", id)
+  const newStatus = {status: true}
+  await updateDoc(location, newStatus)
+}
+
+async function updateWordGuessedStatusToFalse(room, id) {
+  console.log(id)
+  const location = doc(db, "rooms", room, "word-guessed-status", id)
+  const newStatus = {status: false}
+  await updateDoc(location, newStatus)
+}
+
+
 
 async function addPlayer(name, room) {
   try {
@@ -271,7 +315,6 @@ async function getSpyCountFromDB(room, setSpyCount, setSpyCountID) {
   )
 }
 
-
 async function castVote(vote, room) {
   // For host usage. When creating room, add themselves into a room.
   try {
@@ -367,7 +410,6 @@ async function updateResultStatusToFalse(room, id) {
   await updateDoc(location, newStatus)
 }
 
-
 async function getEndGameStatus(room, callbackStatusID, callbackstatus) {
   return onSnapshot(
     query(
@@ -416,4 +458,7 @@ export {addPlayer,
         updateSpyCount,
         getSpyCountFromDB,
         getWordNumber,
+        getWordGuessedStatus,
+        updateWordGuessedStatusToFalse,
+        updateWordGuessedStatusToTrue,
       } 

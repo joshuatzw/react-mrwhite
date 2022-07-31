@@ -47,11 +47,14 @@ function createHandler(name) {
 return (
   <div>
     <h1> Mr White </h1>
-    <input value={name} onChange={(e)=>{setName(e.target.value)}} placeholder="Name"/>
-    <input value={room} onChange={(e)=>{setRoom(e.target.value)}} placeholder="Room ID"/>
-    <button onClick={()=>{joinHandler(name, room)}}> Join </button>
+    <input className='homepage-input' value={name} onChange={(e)=>{setName(e.target.value)}} placeholder="Name"/>
+    <br />
+    <input className='homepage-input' value={room} onChange={(e)=>{setRoom(e.target.value)}} placeholder="Room ID"/>
+    <br />
 
-    <button onClick={()=>{createHandler(name)}}> Create Room </button>
+    <button className='homepage-button' onClick={()=>{joinHandler(name, room)}}> Join </button>
+
+    <button className='homepage-button' onClick={()=>{createHandler(name)}}> Create Room </button>
 
         
   </div>
