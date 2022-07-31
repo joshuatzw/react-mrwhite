@@ -18,9 +18,9 @@ function joinHandler(name, room) {
   joinroomid = joinroomid.toUpperCase();
   resources.setName(name)
   resources.setRoom(joinroomid)
-  addPlayer(name, room)
-  getPlayerList(room, resources.setPlayerList)
-  navigate(`/room/${room}`)
+  addPlayer(name, joinroomid)
+  getPlayerList(joinroomid, resources.setPlayerList)
+  navigate(`/room/${joinroomid}`)
 }
 
 function createHandler(name) {
