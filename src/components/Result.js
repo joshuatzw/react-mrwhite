@@ -49,6 +49,9 @@ export default function Result() {
       resources.setIdentityList([])
       resources.setVoteArray([])
       resources.setPlayerObject({})
+      resources.setResultPage([])
+      resources.setResultPageBoolean(false)
+
 
       // navigate to home page.
       navigate(`/`)
